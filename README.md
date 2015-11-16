@@ -82,6 +82,23 @@ Your Vagrant VM will create an `apps` folder inside of your `serverpilot` direct
 
 `serverpilot/apps/example.dev/public`
 
+##Root Database Access
+In some cases you may need to create temporary databases for things like Unit Tests. The Database user created for an App doesn't have the ability to do this, so we instead need to use the `root` database user.
+
+**It is strongly recomended that this is not done in a production environment**
+
+Following these steps will allow you to access the `root` database user's password:
+
+* Run `vagrant ssh` to login to the server
+* Switch to the `root` server user with `sudo su root`
+* Open the `.my.cnf` file containing the `root` password with `sudo nano /root/.my.cnf`
+* Copy this information in to your project's database settings.
+
+You should now have full database permissions with your application.
+
+Reference: [How to Access MySQL with the MySQL Root User](https://serverpilot.io/community/articles/how-to-access-mysql-with-the-mysql-root-user.html)
+
+
 ##Maintainer Contact
 
  *  Dynamic (<dev@dynamicagency.com>)
@@ -92,6 +109,7 @@ Your Vagrant VM will create an `apps` folder inside of your `serverpilot` direct
 * [VirtualBox](https://www.virtualbox.org)
 * [Vagrant](http://www.vagrantup.com)
 * [Dynamic](http://www.dynamicagency.com)
+* [How to Access MySQL with the MySQL Root User](https://serverpilot.io/community/articles/how-to-access-mysql-with-the-mysql-root-user.html)
 
 ##License
 	Copyright (c) 2015, Dynamic, Inc.
