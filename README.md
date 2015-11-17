@@ -27,6 +27,15 @@ This repo contains a sample Vagrantfile to get up and running with a local devel
 * Paste the command into your VM terminal to install ServerPilot
 * Jump back to ServerPilot and watch the install progress
 
+Once install is complete, you'll want to grant necessary permissions to the `serverpilot` user.
+
+* Switch to the `root` user and add the `serverpilot` user to group `www-data`.
+
+```
+sudo -i
+usermod -a -G www-data serverpilot
+```
+
 ##Create an App
 
 Once install is complete, click **+ Create App**
@@ -38,23 +47,23 @@ Once install is complete, click **+ Create App**
 * Hit ***Create App***
 
 ![screen shot](assets/create-app.png)
-	
+
 Go to [192.168.33.10](http://192.168.33.10) in a browser and you should see the ServerPilot splash page
 
 ![screen shot](assets/splash-screen.png)
 
 ##Update Hosts File
 
-*Optional*
-
 To make it easier to host multiple apps on your Vagrant instance, you can update the hosts file with the domain you've set for your app.
+
+You can manage your hosts file in a app like [GasMask](http://clockwise.ee), or manually via the Terminal.
 
 In Terminal:
 
 * `exit` if still connected to your Vagrant instance
 * `sudo nano /etc/hosts` to open your hosts file
 * At the end of your file, add `192.168.33.10	example.dev`
-* Hit command-O to write, command-X to exit
+* Hit command-o to write, command-x to exit
 
 In a browser, visit [example.dev](http://example.dev) and you should see the ServerPilot splash screen
 
@@ -76,13 +85,31 @@ Using Sequel Pro requires you to connect via SSH. Example settings are below:
 
 ![screen shot](assets/sequel-pro.png)
 
-##Start Coding
+##Use Composer to Create a SilverStripe App
 
-Your Vagrant VM will create an `apps` folder inside of your `serverpilot` directory. Each time your create an app in ServerPilot, a webroot folder will be created here. To start working on your new example app, simply place your code in the following directory:
+ServerPilot is a great control panel to run most PHP website and frameworks, including WordPress, Laravel, and Drupal. For our example app, we're going to walk through creating a site in [SilverStripe](http://silverstripe.org).
 
-`serverpilot/apps/example.dev/public`
+* `vagrant ssh` if not connected to your Vagrant instance
+* Switch to the `serverpilot` user.
+
+```
+su serverpilot
+cd ~/apps/example/public
+rm index.php
+```
+
+* Initialize a SilverStripe app with Composer.
+
+```
+composer5.6-sp create-project silverstripe/installer .
+```
+
+When Composer is done, refresh [http://example.dev](http://example.dev) and you should see the SilverStripe installer page.
+
+![screen shot](assets/silverstripe-install.png)
 
 ##Root Database Access
+
 In some cases you may need to create temporary databases for things like Unit Tests. The Database user created for an App doesn't have the ability to do this, so we instead need to use the `root` database user.
 
 **It is strongly recomended that this is not done in a production environment**
@@ -118,7 +145,7 @@ Reference: [How to Access MySQL with the MySQL Root User](https://serverpilot.io
 	Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
 	Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-	
+
 	Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-	
+
 	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
